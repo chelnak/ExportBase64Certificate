@@ -15,7 +15,7 @@ Properties {
     $ModuleName = ".\ExportBase64Certificate"
     $GitHubUsername = "chelnak"
     $SrcDir = "$($PSScriptRoot)\src"
-    $ModuleManifestPath = "$($SrcDir\$($ModuleName).psd1"
+    $ModuleManifestPath = "$($SrcDir)\$($ModuleName).psd1"
     $ModuleVersion = (Import-PowerShellDataFile -Path $ModuleManifestPath).ModuleVersion
     $ReleaseDir = "$($PSScriptRoot)\Release\$($ModuleName)"
     $TestsDir = "$($PSScriptRoot)\test"
@@ -23,7 +23,7 @@ Properties {
 }
 
 Task Default -Depends Build
-Task Build -Depends Test, BumpVersion, Stage, CreateArtifact, Publish
+Task Build -Depends BumpVersion, Stage, CreateArtifact, Publish
 
 Task Test {
 

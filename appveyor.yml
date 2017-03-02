@@ -14,6 +14,8 @@ init:
   - ps: Install-PackageProvider NuGet -Force | Out-Null
 install:
   - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer -Force
+test_script:
+- ps: .\build.ps1 -Test
 build_script:
   - ps: .\build.ps1
 on_success:
