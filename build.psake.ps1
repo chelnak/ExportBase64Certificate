@@ -16,7 +16,7 @@ Properties {
     $GitHubUsername = "chelnak"
     $SrcDir = "$($PSScriptRoot)\src"
     $ModuleManifestPath = "$($SrcDir)\$($ModuleName).psd1"
-    $ModuleVersion = (Import-PowerShellDataFile -Path $ModuleManifestPath).ModuleVersion
+    $Script:ModuleVersion = (Import-PowerShellDataFile -Path $ModuleManifestPath).ModuleVersion
     $ReleaseDir = "$($PSScriptRoot)\Release\$($ModuleName)"
     $TestsDir = "$($PSScriptRoot)\test"
 
@@ -56,7 +56,7 @@ Task BumpVersion {
 
     # --- Retrieve MAJOR MINOR PATCH from commit message
     $RegEx = [regex] "\[([^\[]*)\]"
-    $BumpVersion = $RegEx.Match($ENV:APPVEYOR_REPO_COMMIT_MESSAGE).Groups[1].Value
+    $BumpVersion = "NONE" #$RegEx.Match($ENV:APPVEYOR_REPO_COMMIT_MESSAGE).Groups[1].Value
 
     switch ($BumpVersion) {
 
@@ -92,7 +92,7 @@ Task BumpVersion {
         default {
 
             # --- Do nothing
-            Write-Verbose -Message "Not bumping module version"
+            Write-Output "Not bumping module version"
             break
 
         }
@@ -114,9 +114,11 @@ Task Stage {
 
 Task CreateArtifact {
 
+    Write-Output "Creating artifacts for version $($Script:ModuleVersion)"
+
     $ArtifactName = "$($ModuleName).$($Script:ModuleVersion).$($ENV:APPVEYOR_BUILD_NUMBER).zip"
-    Compress-Archive -Path $ReleaseDir -DestinationPath $ArtifactName -Force -Confirm:$false -Verbose:$VerbosePreference | Out-Null
-    Push-AppveyorArtifact (Resolve-Path $($ArtifactName))
+    Compress-Archive -Path $ReleaseDir -DestinationPath  "$($PSScriptRoot)\Release\$($ArtifactName)" -Force -Confirm:$false -Verbose:$VerbosePreference | Out-Null
+    #Push-AppveyorArtifact  "$($PSScriptRoot)\Release\$($ArtifactName)"
 
 }
 

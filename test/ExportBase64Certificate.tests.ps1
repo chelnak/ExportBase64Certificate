@@ -1,4 +1,4 @@
-$CertificateStorePath = "Cert:\LocalMachine\My"
+$CertificateStorePath = "Cert:\CurrentUser\My"
 $SelfSignedCertificate = New-SelfSignedCertificate -Subject "CN=TestCert-$(Get-Random -Maximum 10)" -CertStoreLocation $CertificateStorePath
 
 Describe 'Test Export-CertificateBase64' -Fixture {
