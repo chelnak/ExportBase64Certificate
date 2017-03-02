@@ -1,5 +1,6 @@
 $CertificateStorePath = "Cert:\CurrentUser\My"
-$SelfSignedCertificate = New-SelfSignedCertificate -Subject "CN=TestCert-$(Get-Random -Maximum 10)" -CertStoreLocation $CertificateStorePath
+$SelfSignedCertificate = New-SelfSignedCertificate -DnsName "TestCert-$(Get-Random -Maximum 10)" -CertStoreLocation $CertificateStorePath
+Import-Module -Global ..\src\ExportBase64Certificate.psd1
 
 Describe 'Test Export-CertificateBase64' -Fixture {
 
