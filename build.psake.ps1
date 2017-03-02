@@ -23,7 +23,7 @@ Properties {
 }
 
 Task Default -Depends Build
-Task Build -Depends BumpVersion, Stage, CreateArtifact, Publish
+Task Build -Depends BumpVersion, Stage, CreateArtifact
 
 Task Test {
 
