@@ -1,0 +1,28 @@
+version: 0.2.0.{build}
+branches:
+  only:
+  - master
+only_commits:
+  message: /\[MAJOR\]|\[MINOR\]|\[PATCH\]/
+  files:
+    - src/
+image: WMF 5
+environment:
+  GitToken:
+    secure: Zp+1OaziEY3qRLb2m0fodp+pmezszMM4aE5ZcXcWJgMcAOa5gxjdVNWKT5Ve3xt4
+init:
+  - ps: Install-PackageProvider NuGet -Force | Out-Null
+install:
+  - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer -Force
+build_script:
+  - ps: .\build.ps1
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GitToken):x-oauth-basic@github.com`n"
+  - git config --global user.email "craiggumbley@gmail.com""
+  - git config --global user.name "Craig Gumbley"
+  - git checkout master
+  - git add -A .
+  - git status
+  - git commit -m "CI build commit [skip ci]"
+  - git push origin
