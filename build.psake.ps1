@@ -56,7 +56,7 @@ Task BumpVersion {
 
     # --- Retrieve MAJOR MINOR PATCH from commit message
     $RegEx = [regex] "\[([^\[]*)\]"
-    $BumpVersion = "NONE" #$RegEx.Match($ENV:APPVEYOR_REPO_COMMIT_MESSAGE).Groups[1].Value
+    $BumpVersion = $RegEx.Match($ENV:APPVEYOR_REPO_COMMIT_MESSAGE).Groups[1].Value
 
     switch ($BumpVersion) {
 
@@ -118,7 +118,7 @@ Task CreateArtifact {
 
     $ArtifactName = "$($ModuleName).$($Script:ModuleVersion).$($ENV:APPVEYOR_BUILD_NUMBER).zip"
     Compress-Archive -Path $ReleaseDir -DestinationPath  "$($PSScriptRoot)\Release\$($ArtifactName)" -Force -Confirm:$false -Verbose:$VerbosePreference | Out-Null
-    #Push-AppveyorArtifact  "$($PSScriptRoot)\Release\$($ArtifactName)"
+    Push-AppveyorArtifact  "$($PSScriptRoot)\Release\$($ArtifactName)"
 
 }
 
