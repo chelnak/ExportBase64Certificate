@@ -15,7 +15,7 @@ init:
 install:
   - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer -Force
 test_script:
-- ps: .\build.ps1 -Test
+- ps: .\build.ps1 -Task Test
 build_script:
   - ps: .\build.ps1
 on_success:
